@@ -2,9 +2,10 @@
 Contributors: mattmcgiv
 Tags: WOD, CrossFit
 Donate link: http://boxhacks.com/wod-plugin
+GitHub Plugin URI: https://github.com/mattmcgiv/cf-wod-posts
 Requires at least: 3.0.1
 Tested up to: 3.8
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
