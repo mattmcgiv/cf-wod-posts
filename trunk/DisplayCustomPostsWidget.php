@@ -32,7 +32,7 @@ class CustomPostsContent extends WP_Widget {
 	//"Constructor" for this widget
 	//This function declares the widget
     function CustomPostsContent() {
-        //This function call defines how the widget will display in the widget area of the dashboard
+        //This function call defines how the widget will display in the widget area of the dashboard.
         parent::WP_Widget('CustomPostsContent', 'Custom Post Display', array('description' => 'Display content of custom posts types in a widget'));
     }
 
@@ -95,8 +95,13 @@ class CustomPostsContent extends WP_Widget {
         return $instance;
     }
 
-
-    function form($instance) {				
+	//This function defines the options shown for the plugin once it is added to the sidebar area of the widgets screen.
+	
+    function form($instance) {	
+    	//Sets DEFAULTS for the type of Custom Content [todo: "WODs"]
+    	//todo: ['more' -> "Read More..."]
+    	//todo:  Look at default post length and see if it works for WODs	
+    	//todo:  This area of the code has crappy formatting.		
 		$defaults = array( 'title' => 'Custom Content', 'moretext' => 'more', 'postnum'=> 3, 'postlength'=>15);
 		$instance = wp_parse_args( (array) $instance, $defaults ); ?>
          <p>
@@ -108,6 +113,7 @@ class CustomPostsContent extends WP_Widget {
 		<label for="<?php echo $this->get_field_id( 'posttype' ); ?> "><?php _e('Select Post Type:', 'CustomPostsContent'); ?></label>
 		<select id="<?php echo $this->get_field_id( 'posttype' ); ?>" name="<?php echo $this->get_field_name( 'posttype' ); ?>">
 		<?php 
+		//Todo: this looks like a dangerous call to the WP dB...can we replace with an API function call?  It appears it is using SQL to get the custom post types from the dB.
 		global $wpdb;
 		$ptypesql = "SELECT DISTINCT post_type FROM $wpdb->posts WHERE post_type <> 'media' AND post_type <> 'attachment' AND post_type <> 'revision' AND post_type <> 'nav_menu_item'"; 
 		$ptypequery = $wpdb->get_results($ptypesql);
