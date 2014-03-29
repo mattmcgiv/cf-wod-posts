@@ -58,15 +58,12 @@ class CustomPostsContent extends WP_Widget {
 						$cont = custom_posts_word_trimmer ($cont, $postlength, false);
 						$cont = esc_html($cont);
 					
-					
 					echo "<h3><a href='";
 					echo the_permalink();
-					echo "'>"; 
+					echo "'>";
 					echo the_title();
-					echo "</a>";
-					echo "<br>";
-					echo the_time('m/d/y');
-					echo "</h3>";
+					echo the_time();
+					echo "</a></h3>";
 					if ( $show_image ){
 						if ( has_post_thumbnail() ) : 
 						the_post_thumbnail(array( 100, 100 ),array('class' => 'alignleft'));
