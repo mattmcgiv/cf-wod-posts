@@ -41,6 +41,7 @@ class WODPostsContent extends WP_Widget {
 		$customtext = $instance['customtext'];
 		$postlength = $instance['postlength'];
 		$show_image = $instance['show_image'];
+		$posttype = 'cf_wod';
 		$moretext = $instance['moretext'];
 		$postlength = $instance['postlength'];
 		$postnum = $instance['postnum'];
@@ -65,7 +66,6 @@ class WODPostsContent extends WP_Widget {
 					echo "</a>";
 					echo "<br>";
 					echo the_time('m/d/y');
-					echo $posttype;
 					echo "</h3>";
 					if ( $show_image ){
 						if ( has_post_thumbnail() ) : 
