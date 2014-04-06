@@ -56,7 +56,7 @@
 	/*
 	* Adds custom post type to main query so the WODs mix in with other
 	* posts (like blog posts).
-	*/
+	
 
 	add_action( 'pre_get_posts', 'add_my_post_types_to_query' );
 	
@@ -64,5 +64,32 @@
 		if ( is_home() && $query->is_main_query() )
 				$query->set( 'post_type', array( 'post', 'cf_wod' ) );
 		return $query;
-	}
+	}*/
+	
+		/** Add WOD plugin menu to admin area*/
+		add_action( 'admin_menu', 'cf_wod_menu' );
+
+		/** Add options page  */
+		function cf_wod_menu() {
+			add_options_page( 'WOD Options', 'CF WOD Posts', 'manage_options', 'cf_wod', 'wod_options' );
+		}
+
+		/** Step 3. */
+		function wod_options() {
+			if ( !current_user_can( 'manage_options' ) )  {
+				wp_die( __( 'You do not have sufficient permissions to access this page.' ));
+			}		
+		
+			echo '<h2>CF WOD Posts Settings</h2>';	
+			echo '<form action="">';
+			echo '<input type="checkbox" name="cf-wod-main-query" value="main-query">Add WODs to main WordPress query<br>'; 
+			echo '<p>Use this option if you want to have WODs show up along other posts (like blog posts) on the page that shows your posts.</p>';
+			echo '<p>The page that shows your posts can usually be set by changing your "Posts page" in Settings->Reading, but is also influenced by your theme.</p>';
+			echo '</form>';
+			
+			echo '<p class="submit">';
+			echo '<input type="submit" name="Submit" class="button-primary" value="Save" />';
+			echo '</p>';
+		
+		}
 ?>
