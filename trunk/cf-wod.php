@@ -56,40 +56,66 @@
 	/*
 	* Adds custom post type to main query so the WODs mix in with other
 	* posts (like blog posts).
+	*/
 	
-
 	add_action( 'pre_get_posts', 'add_my_post_types_to_query' );
 	
 	function add_my_post_types_to_query( $query ) {
-		if ( is_home() && $query->is_main_query() )
-				$query->set( 'post_type', array( 'post', 'cf_wod' ) );
-		return $query;
-	}*/
-	
-		/** Add WOD plugin menu to admin area*/
-		add_action( 'admin_menu', 'cf_wod_menu' );
-
-		/** Add options page  */
-		function cf_wod_menu() {
-			add_options_page( 'WOD Options', 'CF WOD Posts', 'manage_options', 'cf_wod', 'wod_options' );
-		}
-
-		/** Step 3. */
-		function wod_options() {
-			if ( !current_user_can( 'manage_options' ) )  {
-				wp_die( __( 'You do not have sufficient permissions to access this page.' ));
-			}		
 		
-			echo '<h2>CF WOD Posts Settings</h2>';	
-			echo '<form action="">';
-			echo '<input type="checkbox" name="cf-wod-main-query" value="main-query">Add WODs to main WordPress query<br>'; 
-			echo '<p>Use this option if you want to have WODs show up along other posts (like blog posts) on the page that shows your posts.</p>';
-			echo '<p>The page that shows your posts can usually be set by changing your "Posts page" in Settings->Reading, but is also influenced by your theme.</p>';
-			echo '</form>';
+			echo("<script>console.log('Reading wod_display setting.');</script>");
+		
+		if (get_option('wods_in_main')) {
 			
-			echo '<p class="submit">';
-			echo '<input type="submit" name="Submit" class="button-primary" value="Save" />';
-			echo '</p>';
+			echo("<script>console.log('wod_display... returned true,inside if statement');</script>");
+			
+			if ( is_home() && $query->is_main_query() ) {
+					$query->set( 'post_type', array( 'post', 'cf_wod' ) );
+			}
+			return $query;
+		}		
+	}
+
+	/**
+	* Initializes settings by registering the section, fields etc.
+	*
+	*/
+
+	add_action('admin_init', 'initialize_wod_options');		
+	function initialize_wod_options() {
 		
-		}
+		//Add the setting section to the reading page
+		add_settings_section( 'wod_settings_id', 'WOD Settings', 'wod_settings_callback', 'reading' );
+		
+		// Add the field for toggling whether or not WODs show up in the main query.
+		add_settings_field( 
+	    	'wods_in_main',
+			'WODs in main query?',
+			'toggle_wods_main_query_callback',
+			'reading',
+			'wod_settings_id',
+			array('Activate this setting to have the WODs display in the main query alongside other posts (like blog posts).')
+		);	
+		
+		// Finally, we register the fields with WordPress
+		register_setting(
+			'reading',
+			'wods_in_main'
+		);
+	}
+	
+	//implementing the callback identified in the add_settings_setion(...) call above
+	function wod_settings_callback() {
+		echo '<p>Select how you would like to display WODs.</p>';
+	}
+	
+	//implementing the callback identified in the add_settings_section(...) call above
+	function toggle_wods_main_query_callback($args) {
+	
+	// Note the ID and the name attribute of the element should match that of the ID in the call to add_settings_field
+    $html = '<input type="checkbox" id="wods_in_main" name="wods_in_main" value="1" ' . checked(1, get_option('wods_in_main'), false) . '/>';
+     
+    // Here, we will take the first argument of the array and add it to a label next to the checkbox
+    $html .= '<label for="wods_in_main"> '  . $args[0] . '</label>';
+     
+    echo $html;	}
 ?>
