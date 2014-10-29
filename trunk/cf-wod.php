@@ -261,4 +261,24 @@
 
 	// register WODPostsContent widget
 	add_action('widgets_init', create_function('', 'return register_widget("WODPostsContent");'));
+
+	/*
+	* Adds shortcode to allow inclusion of WODs in content areas
+	*/
+	
+	function cf_wods_custom_shortcode( $atts ) {
+
+		// Attributes
+		extract( shortcode_atts(
+			array(
+				'id' => '',
+			), $atts )
+		);
+	
+		$cf_wod_post=get_post(id);
+		return $cf_wod_post->post_title . $cf_wod_post->post_content;
+
+	}
+
+add_shortcode( 'cf_wods', 'cf_wods_custom_shortcode' );
 ?>
