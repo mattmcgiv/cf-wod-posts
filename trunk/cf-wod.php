@@ -275,10 +275,13 @@
 			), $atts )
 		);
 	
-		$cf_wod_post=get_post(id);
-		error_log($cf_wod_post, 0);
-		return $cf_wod_post->post_title . $cf_wod_post->post_content;
-
+		if ( FALSE === get_post_status( $id ) ) {
+  			return "Error: The WOD referenced in your shortcode doesn't exist.";
+		} else {
+  			$cf_wod_post=get_post($id);
+		return $cf_wod_post->post_title . "<br>" 
+			. $cf_wod_post->post_content;
+		}		
 	}
 
 	add_action( 'init', 'cf_wod_add_shortcode');
