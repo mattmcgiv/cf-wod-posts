@@ -276,9 +276,14 @@
 		);
 	
 		$cf_wod_post=get_post(id);
+		error_log($cf_wod_post, 0);
 		return $cf_wod_post->post_title . $cf_wod_post->post_content;
 
 	}
 
-add_shortcode( 'cf_wods', 'cf_wods_custom_shortcode' );
+	add_action( 'init', 'cf_wod_add_shortcode');
+	function cf_wod_add_shortcode () {
+		add_shortcode( 'cf_wods', 'cf_wods_custom_shortcode' );	
+	}
+	
 ?>
